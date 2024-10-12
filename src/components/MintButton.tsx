@@ -1,4 +1,4 @@
-import { getAddress, signTransaction, isConnected } from "@stellar/freighter-api"
+import { getAddress, signTransaction, isConnected, setAllowed } from "@stellar/freighter-api"
 import { SorobanRpc, TransactionBuilder } from "@stellar/stellar-sdk"
 import * as StellarSdk from "@stellar/stellar-sdk"
 import { useEffect, useState } from "react"
@@ -76,9 +76,20 @@ export const MintButton = ({ id, name }: { id: string, name: string }) => {
     }
   }
 
+  const onConnectWallet = async () => {
+    await setAllowed()
+    const pubKey = await getAddress()
+    setPublicKey(pubKey.address)
+    
+  }
+
   // if(!isReady) {
   //   return <ConnectPasskey />
   // }
+
+  if(!publicKey) {
+    return <button onClick={onConnectWallet} className="bg-teal-500 text-black font-bold px-4 py-2 rounded flex-1 hover:bg-teal-600 text-center disabled:bg-gray-700 disabled:text-white">Connect Wallet</button>
+  }
 
   if(txHash) {
     return <a href={`https://stellar.expert/explorer/testnet/tx/${txHash}`} target="_blank" rel="noreferrer" className="bg-teal-500 text-black font-bold px-4 py-2 rounded flex-1 hover:bg-teal-600 text-center disabled:bg-gray-700 disabled:text-white">See transaction</a>
