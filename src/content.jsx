@@ -37,10 +37,8 @@ const observeTwitterPosts = () => {
   observer.observe(document.body, { childList: true, subtree: true })
 }
 
-// Call the function to start observing
 observeTwitterPosts()
 
-// Check for card.wrapper elements
 const observeCardWrappers = () => {
   const observer = new MutationObserver((mutations) => {
     mutations.forEach((mutation) => {
@@ -72,5 +70,4 @@ const observeCardWrappers = () => {
   observer.observe(document.body, { childList: true, subtree: true })
 }
 
-// Call the function to start observing card wrappers
 observeCardWrappers()
