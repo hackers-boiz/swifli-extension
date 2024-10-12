@@ -30,6 +30,8 @@ function App({id}: {id: string}) {
 
     fetchData()
   }, [id])
+
+  if(!blinkData) return null
   
   return (
     <div

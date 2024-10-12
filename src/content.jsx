@@ -26,7 +26,6 @@ setInterval(() => {
     }
   }
   
-
   // data-testid="card.wrapper"
   // check card.wrapper, if existing search for title, get last | - it's ID
 }, 1000)
