@@ -5,7 +5,7 @@ import { useEffect, useState } from "react"
 // import { ConnectPasskey } from "./ConnectPasskey"
 
 
-export const MintButton = ({ id, name }: { id: string, name: string }) => {
+export const MintButton = ({ id, actionId, name }: { id: string, actionId: string, name: string }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [publicKey, setPublicKey] = useState<string | null>(null)
   const [txHash, setTxHash] = useState<string | null>(null)
@@ -35,7 +35,7 @@ export const MintButton = ({ id, name }: { id: string, name: string }) => {
 
     try {
       const fetchResult = await fetch(
-        `${import.meta.env.VITE_SERVER_URL}/${id}/${name.toLowerCase()}`,
+        `${import.meta.env.VITE_SERVER_URL}/${id}/${actionId.toLowerCase()}`,
         {
           method: 'POST',
           headers: {

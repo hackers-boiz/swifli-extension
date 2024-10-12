@@ -56,6 +56,7 @@ function App({id}: {id: string}) {
               <MintButton
                 key={index}
                 id={id}
+                actionId={action.id}
                 name={action.label}
               />
             ))

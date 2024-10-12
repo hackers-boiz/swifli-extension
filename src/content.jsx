@@ -3,20 +3,30 @@ import ReactDOM from 'react-dom/client'
 import App from './App'
 import './index.css'
 
-setTimeout(() => {
+setInterval(() => {
   const root = document.createElement("div")
   root.id = "wrapper"
-  const twitterPost = document.querySelector('[data-testid="tweetText"]')
-  if (twitterPost && twitterPost.textContent.includes('swifli-frontend.vercel.app')) {
-    const url = twitterPost.querySelector('a').textContent
-    const id = url.split('/').pop()
+  const twitterPosts = document.querySelectorAll('[data-testid="tweetText"]')
 
-    document.querySelector('[data-testid="tweetText"]').appendChild(root)
+  for(const twitterPost of twitterPosts) {
+    const twitterPostId = twitterPost.id
+    const wrapper = document.querySelector(`#${twitterPostId} #wrapper`)
+  
+    if (!wrapper && twitterPost.textContent.includes('swifli-frontend.vercel.app')) {
+      const url = twitterPost.querySelector('a').textContent
+      const id = url.split('/').pop()
 
-    ReactDOM.createRoot(root).render(
-      <React.StrictMode>
-        <App id={id} />
-      </React.StrictMode>
-    )
+      document.querySelector(`#${twitterPostId}`).appendChild(root)
+
+      ReactDOM.createRoot(root).render(
+        <React.StrictMode>
+          <App id={id} />
+        </React.StrictMode>
+      )
+    }
   }
-}, 3 * 1000)
+  
+
+  // data-testid="card.wrapper"
+  // check card.wrapper, if existing search for title, get last | - it's ID
+}, 1000)
