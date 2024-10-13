@@ -81,22 +81,6 @@ export const ConnectPasskey = ({isPasskeyConnected, setIsPasskeyConnected}: {isP
     return balance
   }
 
-  async function fundWallet(contractId: string, fundPubkey: string, fundSigner: any) {
-    const { built, ...transfer } = await native.transfer({
-      to: contractId,
-      from: fundPubkey,
-      amount: BigInt(100 * 10_000_000),
-    })
-
-    await transfer.signAuthEntries({
-      address: fundPubkey,
-      signAuthEntry: fundSigner.signAuthEntry,
-    })
-
-    const res = await server.send(built!)
-    console.log(res)
-  }
-
   if(isPasskeyConnected) return null
 
   if(!keyId && !publicKey) {
