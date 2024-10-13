@@ -1,44 +1,30 @@
-import { getAddress, signTransaction, isConnected, setAllowed } from "@stellar/freighter-api"
+import { signTransaction } from "@stellar/freighter-api"
 import { SorobanRpc, TransactionBuilder } from "@stellar/stellar-sdk"
 import * as StellarSdk from "@stellar/stellar-sdk"
 import { useEffect, useState } from "react"
-// import { ConnectPasskey } from "./ConnectPasskey"
 
-
-export const MintButton = ({ id, actionId, name, isPasskeyConnected, setIsPasskeyConnected }: { id: string, actionId: string, name: string, isPasskeyConnected: boolean, setIsPasskeyConnected: (isPasskeyConnected: boolean) => void }) => {
+export const MintButtonPasskey = ({ id, actionId, name, isPasskeyConnected, setIsPasskeyConnected }: { id: string, actionId: string, name: string, isPasskeyConnected: boolean, setIsPasskeyConnected: (isPasskeyConnected: boolean) => void }) => {
   const [isLoading, setIsLoading] = useState(false)
-  const [publicKey, setPublicKey] = useState<string | null>(null)
   const [txHash, setTxHash] = useState<string | null>(null)
-  const [isReady, setIsReady] = useState(false)
-  
-  useEffect(() => {
-    setIsPasskeyConnected(localStorage.getItem("sp:keyId") !== null)
-  }, [localStorage.getItem("sp:keyId"), localStorage.getItem("sp:publicKey")])
-
 
   useEffect(() => {
-    const checkFreighter = async () => {
+    const checkPasskey = async () => {
       try {
-        const connected = await isConnected()
-        setIsReady(!connected.isConnected)
-        
-        if (connected.isConnected) {
-          const pubKey = await getAddress()
-          setPublicKey(pubKey.address)
-        }
+        setIsPasskeyConnected(localStorage.getItem("sp:keyId") !== null)
       } catch (error) {
-        console.error("Error checking Freighter connection:", error)
-        setIsReady(false)
+        console.error("Error checking Passkey connection:", error)
       }
     }
 
-    checkFreighter()
+    checkPasskey()
   }, [])
 
   const onSubmit =  async () => {   
     setIsLoading(true)
 
     try {
+      const publicKey = localStorage.getItem("sp:publicKey")
+
       const fetchResult = await fetch(
         `${import.meta.env.VITE_SERVER_URL}/${id}/${actionId.toLowerCase()}`,
         {
@@ -81,23 +67,10 @@ export const MintButton = ({ id, actionId, name, isPasskeyConnected, setIsPasske
     }
   }
 
-  const onConnectWallet = async () => {
-    await setAllowed()
-    const pubKey = await getAddress()
-    setPublicKey(pubKey.address)
-    
-  }
-
-  if(isPasskeyConnected) return null
-
-  if(!publicKey) {
-    return <button onClick={onConnectWallet} className="bg-teal-500 text-black font-bold px-4 py-2 rounded flex-1 hover:bg-teal-600 text-center disabled:bg-gray-700 disabled:text-white">Connect Wallet</button>
-  }
-
   if(txHash) {
     return <a href={`https://stellar.expert/explorer/testnet/tx/${txHash}`} target="_blank" rel="noreferrer" className="bg-teal-500 text-black font-bold px-4 py-2 rounded flex-1 hover:bg-teal-600 text-center disabled:bg-gray-700 disabled:text-white">See transaction</a>
   }
 
-  return <button onClick={onSubmit} disabled={isLoading} className="bg-teal-500 text-black font-bold px-4 py-2 rounded flex-1 hover:bg-teal-600 text-center disabled:bg-gray-700 disabled:text-white">[F] {isLoading ? 'Loading...' : name}</button>
+  return <button onClick={onSubmit} disabled={isLoading} className="bg-teal-500 text-black font-bold px-4 py-2 rounded flex-1 hover:bg-teal-600 text-center disabled:bg-gray-700 disabled:text-white">[P] {isLoading ? 'Loading...' : name}</button>
 }
 

@@ -10,7 +10,7 @@ const observeTwitterPosts = () => {
         const twitterPosts = Array.from(document.querySelectorAll('[data-testid="tweetText"]'))
         
         twitterPosts.forEach((twitterPost) => {
-          if (twitterPost.textContent.includes('swifli-frontend.vercel.app')) {
+          if (twitterPost.textContent.includes('swifli-frontend.vercel.app') || twitterPost.textContent.includes('swifli.23stud.io')) {
             const twitterPostId = twitterPost.id
             const wrapper = document.querySelector(`#${twitterPostId} #wrapper`)
             
